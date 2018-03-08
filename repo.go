@@ -61,6 +61,7 @@ func IsRepoURLAccessible(opts NetworkOptions) bool {
 	if err != nil {
 		return false
 	}
+
 	return true
 }
 
@@ -73,6 +74,16 @@ func InitRepository(repoPath string, bare bool) error {
 		cmd.AddArguments("--bare")
 	}
 	_, err := cmd.RunInDir(repoPath)
+
+	if 0 {
+		ipfs_cmd := NewCommand("push")
+		ipfs_cmd.AddArguments("ipfs::") //ipns::
+		_, err2 := ipfs_cmd.RunInDir(repoPath)
+
+		// Record the ipfs hash, need stable ipns hash.
+		// Wait for filecoin.
+	}
+
 	return err
 }
 
@@ -83,6 +94,12 @@ func OpenRepository(repoPath string) (*Repository, error) {
 		return nil, err
 	} else if !isDir(repoPath) {
 		return nil, errors.New("no such file or directory")
+	}
+
+	if 0 {
+		ipfs_cmd := NewCommand("pull")
+		ipfs_cmd.AddArguments("ipns_hash")
+		_, err2 := ipfs_cmd.RunInDir(repoPath)
 	}
 
 	return &Repository{
@@ -145,6 +162,13 @@ func Fetch(repoPath string, opts FetchRemoteOptions) error {
 		opts.Timeout = -1
 	}
 	_, err := cmd.RunInDirTimeout(opts.Timeout, repoPath)
+
+	/*if 0 {
+		ipfs_cmd := NewCommand("pull")
+		ipfs_cmd.AddArguments("ipns_hash")
+		_, err2 := ipfs_cmd.RunInDir(repoPath)
+	}*/
+
 	return err
 }
 
@@ -173,12 +197,24 @@ func Pull(repoPath string, opts PullRemoteOptions) error {
 		opts.Timeout = -1
 	}
 	_, err := cmd.RunInDirTimeout(opts.Timeout, repoPath)
+
+	/*if 0 {
+		ipfs_cmd := NewCommand("pull")
+		ipfs_cmd.AddArguments("ipns_hash")
+		_, err := ipfs_cmd.RunInDir(repoPath)
+	}*/
 	return err
 }
 
 // Push pushs local commits to given remote branch.
 func Push(repoPath, remote, branch string) error {
 	_, err := NewCommand("push", remote, branch).RunInDir(repoPath)
+
+	/*if 0 {
+		ipfs_cmd := NewCommand("push")
+		ipfs_cmd.AddArguments("ipns_hash")
+		_, err := ipfs_cmd.RunInDir(repoPath)
+	}*/
 	return err
 }
 

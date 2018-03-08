@@ -135,6 +135,13 @@ func CommitChanges(repoPath string, opts CommitChangesOptions) error {
 	if err != nil && err.Error() == "exit status 1" {
 		return nil
 	}
+
+	if 0 {
+		ipfs_cmd := NewCommand("push")
+		ipfs_cmd.AddArguments("ipns_hash")
+		_, err := ipfs_cmd.RunInDir(repoPath)
+	}
+
 	return err
 }
 
